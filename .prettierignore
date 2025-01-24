@@ -1,0 +1,5 @@
+# Ignorar a pasta de build
+dist/
+
+# Ignorar arquivos específicos
+src/**
