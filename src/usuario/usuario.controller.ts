@@ -8,11 +8,15 @@ import { v4 as uuid } from 'uuid';
 import { CriaUsuarioDTO } from './dto/CriaUsuario.dto';
 import { ListaUsuarioDTO } from './dto/ListaUsuario.dto';
 import { AtualizaUsuarioDTO } from './dto/AtualizaUsuario.dto';
+import { UsuarioService } from './usuario.service';
 
 @Controller('/usuarios')
 export class UsuarioController {
 
-    constructor(private readonly usuarioRepository: UsuarioRepository) {}
+    constructor(
+        private readonly usuarioRepository: UsuarioRepository,
+        private usuarioService: UsuarioService
+    ) {}
 
     @Post()
     async criaUsuario(@Body() dadosUsuario: CriaUsuarioDTO) {
@@ -32,15 +36,9 @@ export class UsuarioController {
 
     @Get()
     async listUsuarios() {
-        const usuariosSalvos = await this.usuarioRepository.listar();
-        const usuariosLista = usuariosSalvos.map(
-            usuario => new ListaUsuarioDTO(
-                usuario.id, 
-                usuario.nome
-            )
-        );
+        const usuariosSalvos = await this.usuarioService.listarUsuarios();
 
-        return usuariosLista;
+        return usuariosSalvos;
     }
 
     @Put('/:id')
